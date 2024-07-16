@@ -20,8 +20,10 @@ final class TabBarController: UITabBarController {
     }
     
     private func configure() {
-        tabBar.tintColor = .gray
+    
         tabBar.backgroundColor = .clear
+        tabBar.tintColor = .white
+        tabBar.unselectedItemTintColor = .gray
         
         let superheroesController = UIViewController()
         let supervillainsController = UIViewController()
@@ -30,12 +32,12 @@ final class TabBarController: UITabBarController {
         let supervillainsNavigation = UINavigationController(rootViewController: supervillainsController)
         
         superheroesController.tabBarItem = UITabBarItem(title: "Superheroes",
-                                                        image: UIImage(named: "superheroes")?.withRenderingMode(.alwaysTemplate),
+                                                        image: UIImage(named: "superheroes"),
                                                         tag: 0)
-        superheroesController.tabBarItem = UITabBarItem(title: "Supervillains",
-                                                        image: UIImage(named: "supervillains")?.withRenderingMode(.alwaysTemplate),
-                                                        tag: 1)
-        
+        supervillainsController.tabBarItem = UITabBarItem(title: "Supervillains",
+                                                          image: UIImage(named: "supervillains"),
+                                                          tag: 1)
+    
         setViewControllers([superheroesNavigation, supervillainsNavigation], animated: false)
     }
 }
