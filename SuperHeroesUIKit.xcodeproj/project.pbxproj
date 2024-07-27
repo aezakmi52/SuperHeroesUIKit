@@ -13,6 +13,7 @@
 		849BDF272C3575CB00DD81EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849BDF262C3575CB00DD81EA /* Assets.xcassets */; };
 		849BDF2A2C3575CB00DD81EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849BDF282C3575CB00DD81EA /* LaunchScreen.storyboard */; };
 		849BDF322C37051F00DD81EA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849BDF312C37051E00DD81EA /* TabBarController.swift */; };
+		849BDF342C55718700DD81EA /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849BDF332C55718700DD81EA /* HeroModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		849BDF292C3575CB00DD81EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		849BDF2B2C3575CB00DD81EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		849BDF312C37051E00DD81EA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		849BDF332C55718700DD81EA /* HeroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		849BDF1C2C3575C600DD81EA /* SuperHeroesUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				849BDF332C55718700DD81EA /* HeroModel.swift */,
 				849BDF1D2C3575C600DD81EA /* AppDelegate.swift */,
 				849BDF1F2C3575C600DD81EA /* SceneDelegate.swift */,
 				849BDF212C3575C600DD81EA /* ViewController.swift */,
@@ -141,6 +144,7 @@
 				849BDF322C37051F00DD81EA /* TabBarController.swift in Sources */,
 				849BDF1E2C3575C600DD81EA /* AppDelegate.swift in Sources */,
 				849BDF202C3575C600DD81EA /* SceneDelegate.swift in Sources */,
+				849BDF342C55718700DD81EA /* HeroModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
