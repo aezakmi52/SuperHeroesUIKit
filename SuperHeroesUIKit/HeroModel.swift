@@ -5,14 +5,18 @@
 //  Created by Админ on 27.07.2024.
 //
 
-import Foundation
 
-struct Hero: Codable, Hashable, Identifiable {
-    let id: Int
+import UIKit
+
+struct HeroModel: Codable, Hashable, Identifiable {
+    var id: Int
     
-    let name:String
-    let category: HeroCategory
-    let stats: HeroStats
+    var name:String
+    var category: HeroCategory
+    var stats: HeroStats
+    var isFavorite: Bool
+    var imageURL: String
+    var color: RGBAColor
     
     enum HeroCategory: String, Codable, CaseIterable {
         case superheroes = "superheroes"
@@ -20,12 +24,24 @@ struct Hero: Codable, Hashable, Identifiable {
     }
     
     struct HeroStats: Codable, Hashable {
-        let intelligence: Int
-        let power: Int
-        let speed: Int
-        let endurance: Int
-        let reaction: Int
-        let protection: Int
+        var intelligence: Int
+        var power: Int
+        var speed: Int
+        var endurance: Int
+        var reaction: Int
+        var protection: Int
+    }
+    
+    struct RGBAColor: Codable, Hashable {
+        
+        var red: Double
+        var green: Double
+        var blue: Double
+        var alpha: Double
+        
+        var outputColor: UIColor {
+            return UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha)
+        }
     }
 }
 

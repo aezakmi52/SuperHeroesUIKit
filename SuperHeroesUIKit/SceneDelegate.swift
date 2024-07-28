@@ -19,10 +19,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = UINavigationController(rootViewController: TabBarController())
+        window.rootViewController = UINavigationController(rootViewController: HeroesViewController())
         window.makeKeyAndVisible()
         
         self.window = window
+        
+        let heroesVC = HeroesViewController()
+        let villainsVC = VillainsViewController()
+        
+        heroesVC.tabBarItem = UITabBarItem(title: "Superheroes", image: UIImage(named: "superheroes"), tag: 0)
+        villainsVC.tabBarItem = UITabBarItem(title: "Supervillains", image: UIImage(named: "supervillains"), tag: 1)
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [UINavigationController(rootViewController: heroesVC), UINavigationController(rootViewController: villainsVC)]
+        
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
     }
     
 }
