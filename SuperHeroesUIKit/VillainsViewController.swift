@@ -34,6 +34,8 @@ class VillainsViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HeroTableViewCell.self, forCellReuseIdentifier: "HeroCell")
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .black
         view.addSubview(tableView)
     }
     
@@ -69,6 +71,7 @@ class VillainsViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HeroCell", for: indexPath) as! HeroTableViewCell
         cell.configure(with: displayHeroes[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
     

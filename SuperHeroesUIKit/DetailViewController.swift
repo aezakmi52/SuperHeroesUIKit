@@ -11,6 +11,7 @@ class DetailViewController: UIViewController {
     
     var hero: HeroModel!
     
+    let heroImage = UIImageView()
     let name = UILabel()
     let stats = UILabel()
     let favoriteButton = UIButton()
@@ -19,7 +20,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        name.text = hero.name
+        name.text = hero.name.capitalized
         name.textColor = .white
         stats.text = hero.category.rawValue
         stats.textColor = .white
@@ -28,16 +29,20 @@ class DetailViewController: UIViewController {
         favoriteButton.setTitleColor(.orange, for: .normal)
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         
+        heroImage.translatesAutoresizingMaskIntoConstraints = false
         name.translatesAutoresizingMaskIntoConstraints = false
         stats.translatesAutoresizingMaskIntoConstraints = false
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(heroImage)
         view.addSubview(name)
         view.addSubview(stats)
         view.addSubview(favoriteButton)
         
         NSLayoutConstraint.activate([
-            name.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            heroImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            
+            name.topAnchor.constraint(equalTo: heroImage.bottomAnchor, constant: 20),
             name.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             name.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
@@ -48,6 +53,13 @@ class DetailViewController: UIViewController {
             favoriteButton.topAnchor.constraint(equalTo: stats.bottomAnchor, constant: 20),
             favoriteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    private func configure(with hero: HeroModel) {
+        let url = URL(string: hero.imageURL)
+        if let data = try? Data(contentsOf: url!) {
+            heroImage.image = UIImage(data: data)
+        }
     }
     
     @objc func toggleFavorite() {

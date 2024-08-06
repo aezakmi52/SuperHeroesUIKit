@@ -17,7 +17,7 @@ class HeroTableViewCell: UITableViewCell {
     
     var isFavorite: Bool = false {
         didSet {
-            let starImage = isFavorite ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+            let starImage = isFavorite ? UIImage(named: "star.fill") : UIImage(named: "star")
             favoriteButton.setImage(starImage, for: .normal)
         }
     }
@@ -42,38 +42,68 @@ class HeroTableViewCell: UITableViewCell {
         contentView.addSubview(statsStackView)
         contentView.addSubview(favoriteButton)
         
-        NSLayoutConstraint.activate([
-            heroImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        NSLayoutConstraint.activate([            
+            heroImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             heroImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            heroImage.widthAnchor.constraint(equalToConstant: 60),
-            heroImage.heightAnchor.constraint(equalToConstant: 60),
+            heroImage.widthAnchor.constraint(equalToConstant: 164),
+            heroImage.heightAnchor.constraint(equalToConstant: 164),
             
-            name.leadingAnchor.constraint(equalTo: heroImage.trailingAnchor, constant: 16),
+            name.leadingAnchor.constraint(equalTo: favoriteButton.trailingAnchor, constant: 8),
             name.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            name.trailingAnchor.constraint(equalTo: favoriteButton.leadingAnchor, constant: -16),
+            name.centerYAnchor.constraint(equalTo: favoriteButton.centerYAnchor),
+
             
-            statsStackView.leadingAnchor.constraint(equalTo: name.leadingAnchor),
-            statsStackView.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 8),
-            statsStackView.trailingAnchor.constraint(equalTo: name.trailingAnchor),
+            statsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            statsStackView.topAnchor.constraint(equalTo: name.bottomAnchor, constant:16),
             
-            favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            favoriteButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            favoriteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
         ])
         
-        statsStackView.axis = .horizontal
+        statsStackView.axis = .vertical
         statsStackView.spacing = 8
+        
+        name.font = UIFont.boldSystemFont(ofSize: 22)
+        name.textColor = .white
+        favoriteButton.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
+        favoriteButton.setTitle("", for: .normal)
+        favoriteButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+        contentView.backgroundColor = .white
     }
     
     func configure(with hero: HeroModel) {
-        name.text = hero.name
-        heroImage.image = UIImage(named: hero.imageURL)
+        name.text = hero.name.capitalized
+        
+        let url = URL(string: hero.imageURL)
+        if let data = try? Data(contentsOf: url!) {
+            heroImage.image = UIImage(data: data)
+        }
+        
         isFavorite = hero.isFavorite
         
         statsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        let label = UILabel()
-        label.text = "INT: \(hero.stats.intelligence)"
-        statsStackView.addArrangedSubview(label)
+        let stats = [
+            "INT": hero.stats.intelligence,
+            "POW": hero.stats.power,
+            "SPD": hero.stats.speed,
+            "END": hero.stats.endurance,
+            "REA": hero.stats.reaction,
+            "PRO": hero.stats.protection
+        ]
+        
+        for (stat, value) in stats {
+            let label = UILabel()
+            label.text = "\(value) \(stat)"
+            label.textColor = .white
+            label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+            statsStackView.addArrangedSubview(label)
+        }
+        
+        contentView.backgroundColor = hero.color.outputColor
+        contentView.layer.cornerRadius = 10
+        contentView.layer.masksToBounds = true
         
     }
 }

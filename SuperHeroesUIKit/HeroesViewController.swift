@@ -8,7 +8,7 @@
 import UIKit
 
 class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+
     let tableView = UITableView()
     var heroes: [HeroModel] = []
     var displayHeroes: [HeroModel] = []
@@ -21,7 +21,6 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Superheroes"
         view.backgroundColor = .white
         
         setupTableView()
@@ -34,17 +33,21 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HeroTableViewCell.self, forCellReuseIdentifier: "HeroCell")
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .black
+        tableView.rowHeight = 200
         view.addSubview(tableView)
     }
     
     func setupFavoriteFilterButton() {
-        let favoriteFilterButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(toggleFavoriteFilter))
+        let favoriteFilterButton = UIBarButtonItem(image: UIImage(named: "star"), style: .plain, target: self, action: #selector(toggleFavoriteFilter))
+        favoriteFilterButton.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
         navigationItem.rightBarButtonItem = favoriteFilterButton
     }
     
     @objc func toggleFavoriteFilter() {
         showFavoritesOnly.toggle()
-        let image = showFavoritesOnly ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        let image = showFavoritesOnly ? UIImage(named: "star.fill") : UIImage(named: "star")
         navigationItem.rightBarButtonItem?.image = image
     }
     
@@ -69,6 +72,7 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HeroCell", for: indexPath) as! HeroTableViewCell
         cell.configure(with: displayHeroes[indexPath.row])
+        cell.selectionStyle = .none
         return cell
     }
     
