@@ -23,6 +23,12 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        title = "Superheroes"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barTintColor = .black
+        
         setupTableView()
         setupFavoriteFilterButton()
         loadHeroes()
@@ -81,5 +87,15 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let detailVC = DetailViewController()
         detailVC.hero = hero
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+        return footerView
     }
 }

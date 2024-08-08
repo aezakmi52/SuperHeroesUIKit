@@ -63,13 +63,14 @@ class HeroTableViewCell: UITableViewCell {
         statsStackView.axis = .vertical
         statsStackView.spacing = 8
         
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
+        
         name.font = UIFont.boldSystemFont(ofSize: 22)
         name.textColor = .white
         favoriteButton.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
         favoriteButton.setTitle("", for: .normal)
         favoriteButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        
-        contentView.backgroundColor = .white
     }
     
     func configure(with hero: HeroModel) {

@@ -38,6 +38,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.tabBar.backgroundColor = .clear
         tabBarController.tabBar.unselectedItemTintColor = .gray
         
+        let appearance = UITabBarAppearance()
+        
+        appearance.backgroundColor = .black
+        
+        tabBarController.tabBar.standardAppearance = appearance
+        tabBarController.tabBar.scrollEdgeAppearance = appearance
+        
         tabBarController.viewControllers = [UINavigationController(rootViewController: heroesVC), UINavigationController(rootViewController: villainsVC)]
         
         window.rootViewController = tabBarController

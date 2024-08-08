@@ -26,7 +26,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
         
-        
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([            
@@ -75,6 +74,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let detailVC = DetailViewController()
         detailVC.hero = hero
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10 
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+        return footerView
     }
 }
 
