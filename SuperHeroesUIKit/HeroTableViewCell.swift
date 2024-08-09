@@ -10,9 +10,11 @@ import UIKit
 
 class HeroTableViewCell: UITableViewCell {
     
+    let customContentView = UIView()
     let heroImage = UIImageView()
     let name = UILabel()
     let statsStackView = UIStackView()
+    let valueStackView = UIStackView()
     let favoriteButton = UIButton(type: .system)
     
     var isFavorite: Bool = false {
@@ -35,14 +37,22 @@ class HeroTableViewCell: UITableViewCell {
         heroImage.translatesAutoresizingMaskIntoConstraints = false
         name.translatesAutoresizingMaskIntoConstraints = false
         statsStackView.translatesAutoresizingMaskIntoConstraints = false
+        valueStackView.translatesAutoresizingMaskIntoConstraints = false
         favoriteButton.translatesAutoresizingMaskIntoConstraints = false
+        customContentView.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.addSubview(heroImage)
-        contentView.addSubview(name)
-        contentView.addSubview(statsStackView)
-        contentView.addSubview(favoriteButton)
+        customContentView.addSubview(heroImage)
+        customContentView.addSubview(name)
+        customContentView.addSubview(statsStackView)
+        customContentView.addSubview(valueStackView)
+        customContentView.addSubview(favoriteButton)
+        contentView.addSubview(customContentView)
         
         NSLayoutConstraint.activate([            
+            customContentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            customContentView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            customContentView.heightAnchor.constraint(equalToConstant: 200),
+            
             heroImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             heroImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             heroImage.widthAnchor.constraint(equalToConstant: 164),
@@ -52,16 +62,20 @@ class HeroTableViewCell: UITableViewCell {
             name.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             name.centerYAnchor.constraint(equalTo: favoriteButton.centerYAnchor),
 
+            valueStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            valueStackView.topAnchor.constraint(equalTo: name.bottomAnchor, constant:16),
             
-            statsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            statsStackView.leadingAnchor.constraint(equalTo: valueStackView.trailingAnchor, constant: 8),
             statsStackView.topAnchor.constraint(equalTo: name.bottomAnchor, constant:16),
             
             favoriteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
         ])
+        valueStackView.axis = .vertical
+        valueStackView.spacing = 2
         
         statsStackView.axis = .vertical
-        statsStackView.spacing = 8
+        statsStackView.spacing = 2
         
         contentView.backgroundColor = .clear
         backgroundColor = .clear
@@ -71,6 +85,7 @@ class HeroTableViewCell: UITableViewCell {
         favoriteButton.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
         favoriteButton.setTitle("", for: .normal)
         favoriteButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
     }
     
     func configure(with hero: HeroModel) {
@@ -94,17 +109,24 @@ class HeroTableViewCell: UITableViewCell {
             "PRO": hero.stats.protection
         ]
         
-        for (stat, value) in stats {
+        for (value) in stats.values {
             let label = UILabel()
-            label.text = "\(value) \(stat)"
-            label.textColor = .white
+            label.text = "\(value)"
+            label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+            label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+            valueStackView.addArrangedSubview(label)
+        }
+        
+        for (stat) in stats.keys{
+            let label = UILabel()
+            label.text = "\(stat)"
+            label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.38)
             label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
             statsStackView.addArrangedSubview(label)
         }
         
-        contentView.backgroundColor = hero.color.outputColor
-        contentView.layer.cornerRadius = 10
-        contentView.layer.masksToBounds = true
-        
+        customContentView.backgroundColor = hero.color.outputColor
+        customContentView.layer.cornerRadius = 24
+        customContentView.layer.masksToBounds = true
     }
 }

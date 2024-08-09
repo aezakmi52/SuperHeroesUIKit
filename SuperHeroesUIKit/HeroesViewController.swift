@@ -24,10 +24,11 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         view.backgroundColor = .white
         
         title = "Superheroes"
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.foregroundColor: UIColor.clear]
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.barTintColor = .black
+        navigationController?.navigationBar.barTintColor = .clear
         
         setupTableView()
         setupFavoriteFilterButton()
@@ -41,7 +42,7 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.register(HeroTableViewCell.self, forCellReuseIdentifier: "HeroCell")
         tableView.separatorStyle = .none
         tableView.backgroundColor = .black
-        tableView.rowHeight = 200
+        tableView.rowHeight = 220
         view.addSubview(tableView)
     }
     
@@ -79,6 +80,7 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "HeroCell", for: indexPath) as! HeroTableViewCell
         cell.configure(with: displayHeroes[indexPath.row])
         cell.selectionStyle = .none
+        
         return cell
     }
     
@@ -87,15 +89,5 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let detailVC = DetailViewController()
         detailVC.hero = hero
         navigationController?.pushViewController(detailVC, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 10
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView()
-        footerView.backgroundColor = .clear
-        return footerView
     }
 }
