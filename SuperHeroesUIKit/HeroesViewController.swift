@@ -9,6 +9,7 @@ import UIKit
 
 class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    let category: String = HeroModel.HeroCategory.superheroes.rawValue.capitalized
     let tableView = UITableView()
     var heroes: [HeroModel] = []
     var displayHeroes: [HeroModel] = []
@@ -23,7 +24,7 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        title = "Superheroes"
+        title = category
         navigationController?.navigationBar.titleTextAttributes =
             [NSAttributedString.Key.foregroundColor: UIColor.clear]
         navigationController?.navigationBar.prefersLargeTitles = true

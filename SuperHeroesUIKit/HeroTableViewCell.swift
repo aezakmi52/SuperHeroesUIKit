@@ -54,12 +54,12 @@ class HeroTableViewCell: UITableViewCell {
             customContentView.heightAnchor.constraint(equalToConstant: 200),
             
             heroImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            heroImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            heroImage.centerYAnchor.constraint(equalTo: customContentView.centerYAnchor),
             heroImage.widthAnchor.constraint(equalToConstant: 164),
             heroImage.heightAnchor.constraint(equalToConstant: 164),
             
             name.leadingAnchor.constraint(equalTo: favoriteButton.trailingAnchor, constant: 8),
-            name.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            name.topAnchor.constraint(equalTo: customContentView.topAnchor, constant: 16),
             name.centerYAnchor.constraint(equalTo: favoriteButton.centerYAnchor),
 
             valueStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -69,7 +69,7 @@ class HeroTableViewCell: UITableViewCell {
             statsStackView.topAnchor.constraint(equalTo: name.bottomAnchor, constant:16),
             
             favoriteButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
+            favoriteButton.topAnchor.constraint(equalTo: customContentView.topAnchor, constant: 16)
         ])
         valueStackView.axis = .vertical
         valueStackView.spacing = 2

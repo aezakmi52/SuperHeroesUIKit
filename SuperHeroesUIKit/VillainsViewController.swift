@@ -5,10 +5,12 @@
 //  Created by Админ on 28.07.2024.
 //
 
+
 import UIKit
 
 class VillainsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+
+    let category: String = HeroModel.HeroCategory.supervillains.rawValue.capitalized
     let tableView = UITableView()
     var heroes: [HeroModel] = []
     var displayHeroes: [HeroModel] = []
@@ -21,8 +23,14 @@ class VillainsViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Superheroes"
         view.backgroundColor = .white
+        
+        title = category
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.foregroundColor: UIColor.clear]
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.barTintColor = .clear
         
         setupTableView()
         setupFavoriteFilterButton()
@@ -36,17 +44,19 @@ class VillainsViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.register(HeroTableViewCell.self, forCellReuseIdentifier: "HeroCell")
         tableView.separatorStyle = .none
         tableView.backgroundColor = .black
+        tableView.rowHeight = 220
         view.addSubview(tableView)
     }
     
     func setupFavoriteFilterButton() {
-        let favoriteFilterButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(toggleFavoriteFilter))
+        let favoriteFilterButton = UIBarButtonItem(image: UIImage(named: "star"), style: .plain, target: self, action: #selector(toggleFavoriteFilter))
+        favoriteFilterButton.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
         navigationItem.rightBarButtonItem = favoriteFilterButton
     }
     
     @objc func toggleFavoriteFilter() {
         showFavoritesOnly.toggle()
-        let image = showFavoritesOnly ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        let image = showFavoritesOnly ? UIImage(named: "star.fill") : UIImage(named: "star")
         navigationItem.rightBarButtonItem?.image = image
     }
     
@@ -72,6 +82,7 @@ class VillainsViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "HeroCell", for: indexPath) as! HeroTableViewCell
         cell.configure(with: displayHeroes[indexPath.row])
         cell.selectionStyle = .none
+        
         return cell
     }
     
