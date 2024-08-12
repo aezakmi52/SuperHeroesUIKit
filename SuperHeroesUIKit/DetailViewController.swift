@@ -20,6 +20,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.tintColor = .white
+    
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         gradient.colors = [hero.color.outputColor.cgColor, UIColor.black.cgColor]
