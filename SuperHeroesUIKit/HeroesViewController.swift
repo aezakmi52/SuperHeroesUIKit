@@ -11,8 +11,8 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     let category: String = HeroModel.HeroCategory.superheroes.rawValue.capitalized
     let tableView = UITableView()
-    var heroes: [HeroModel] = []
-    var displayHeroes: [HeroModel] = []
+    var heroes = DataService.shared.heroes.filter {$0.category == .superheroes}
+    var displayHeroes = DataService.shared.heroes.filter {$0.category == .superheroes}
     var showFavoritesOnly = false {
         didSet {
             displayHeroes = showFavoritesOnly ? heroes.filter { $0.isFavorite } : heroes
@@ -37,7 +37,6 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         setupTableView()
         setupFavoriteFilterButton()
-        loadHeroes()
     }
     
     func setupTableView() {
@@ -63,20 +62,6 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationItem.rightBarButtonItem?.image = image
     }
     
-    func loadHeroes() {
-        if let path = Bundle.main.path(forResource: "Hero", ofType: "json") {
-            let url = URL(fileURLWithPath: path)
-            do {
-                let data = try Data(contentsOf: url)
-                heroes = try JSONDecoder().decode([HeroModel].self, from: data).filter { $0.category.rawValue == "superheroes" }
-                displayHeroes = heroes
-                tableView.reloadData()
-            } catch {
-                print("Error loading heroes: \(error)")
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayHeroes.count
     }
@@ -85,6 +70,7 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "HeroCell", for: indexPath) as! HeroTableViewCell
         cell.configure(with: displayHeroes[indexPath.row])
         cell.selectionStyle = .none
+        cell.hero = displayHeroes[indexPath.row]
         
         return cell
     }

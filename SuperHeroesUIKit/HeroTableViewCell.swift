@@ -10,19 +10,18 @@ import UIKit
 
 class HeroTableViewCell: UITableViewCell {
     
+    var hero: HeroModel! {
+        didSet {
+            updateUI()
+        }
+    }
+    
     let customContentView = UIView()
     let heroImage = UIImageView()
     let name = UILabel()
     let statsStackView = UIStackView()
     let valueStackView = UIStackView()
-    let favoriteButton = UIButton(type: .system)
-    
-    var isFavorite: Bool = false {
-        didSet {
-            let starImage = isFavorite ? UIImage(named: "star.fill") : UIImage(named: "star")
-            favoriteButton.setImage(starImage, for: .normal)
-        }
-    }
+    let favoriteButton = UIButton()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -85,7 +84,16 @@ class HeroTableViewCell: UITableViewCell {
         favoriteButton.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
         favoriteButton.setTitle("", for: .normal)
         favoriteButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        
+        favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
+    }
+    
+    func updateUI() {
+        favoriteButton.setImage(hero.isFavorite ? UIImage(named: "star.fill") : UIImage(named: "star"), for: .normal)
+    }
+    
+    @objc func toggleFavorite() {
+        DataService.shared.changeFavorite(id: hero.id, isFavorite: !hero.isFavorite)
+        updateUI()
     }
     
     func configure(with hero: HeroModel) {
@@ -95,8 +103,6 @@ class HeroTableViewCell: UITableViewCell {
         if let data = try? Data(contentsOf: url!) {
             heroImage.image = UIImage(data: data)
         }
-        
-        isFavorite = hero.isFavorite
         
         statsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         

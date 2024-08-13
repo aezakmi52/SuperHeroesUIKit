@@ -29,9 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         heroesVC.tabBarItem = UITabBarItem(title: "Superheroes", image: UIImage(named: "superheroes"), tag: 0)
         villainsVC.tabBarItem = UITabBarItem(title: "Supervillains", image: UIImage(named: "supervillains"), tag: 1)
         
-        
-        
-        
         let tabBarController = UITabBarController()
         
         tabBarController.tabBar.tintColor = .white

@@ -16,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         
+        let heroes: [HeroModel] = DataDownloadService().load(file: "Hero.json")
+        DataService.shared.heroes = heroes
+        
         let heroesVC = HeroesViewController()
         let villainsVC = VillainsViewController()
         

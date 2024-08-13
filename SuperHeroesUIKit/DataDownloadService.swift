@@ -1,18 +1,17 @@
 //
-//  DataService.swift
+//  LoadService.swift
 //  SuperHeroesUIKit
 //
-//  Created by Админ on 27.07.2024.
+//  Created by Админ on 13.08.2024.
 //
 
 import UIKit
-
 
 class DataDownloadService {
     
     // MARK: - Useful
     
-    func load<T: Decodable>(_ filename: String) -> T {
+    func load<T: Decodable>(file filename: String) -> T {
         let data: Data
         
         guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
@@ -32,5 +31,3 @@ class DataDownloadService {
         }
     }
 }
-
-

@@ -68,6 +68,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "HeroCell", for: indexPath) as! HeroTableViewCell
         cell.configure(with: displayHero[indexPath.row])
         cell.selectionStyle = .none
+        cell.hero = displayHero[indexPath.row]
         
         return cell
     }
