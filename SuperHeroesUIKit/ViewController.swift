@@ -10,14 +10,16 @@ import UIKit
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()
-    var heroes = [HeroModel]()
-    var displayHero: [HeroModel] {
-        return showFavoritesOnly ? heroes.filter { $0.isFavorite } : heroes
-    }
+    var heroes: [HeroModel] = []
+    var displayHero: [HeroModel] = []
     var showFavoritesOnly = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        heroes = DataService.shared.heroes.filter {$0.category == .superheroes}
+        displayHero = showFavoritesOnly ? heroes.filter { $0.isFavorite } : heroes
+        
         view.backgroundColor = .black
         
         tableView.dataSource = self
@@ -39,25 +41,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Favorites", style: .plain, target: self, action: #selector(toggleFavorites))
         navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
-        
-        loadHeroes()
     }
     
     @objc private func toggleFavorites() {
         showFavoritesOnly.toggle()
         navigationItem.rightBarButtonItem?.title = showFavoritesOnly ? "All" : "Favorites"
         tableView.reloadData()
-    }
-    
-    private func loadHeroes() {
-        guard let url = Bundle.main.url(forResource: "Hero", withExtension: "json") else { return }
-        do {
-            let data = try Data(contentsOf: url)
-            heroes = try JSONDecoder().decode([HeroModel].self, from: data)
-            tableView.reloadData()
-        } catch {
-            print("Error loading heroes: \(error)")
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

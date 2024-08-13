@@ -11,8 +11,8 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     let category: String = HeroModel.HeroCategory.superheroes.rawValue.capitalized
     let tableView = UITableView()
-    var heroes = DataService.shared.heroes.filter {$0.category == .superheroes}
-    var displayHeroes = DataService.shared.heroes.filter {$0.category == .superheroes}
+    var heroes: [HeroModel] = []
+    var displayHeroes: [HeroModel] = []
     var showFavoritesOnly = false {
         didSet {
             displayHeroes = showFavoritesOnly ? heroes.filter { $0.isFavorite } : heroes
@@ -22,6 +22,10 @@ class HeroesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        heroes = DataService.shared.heroes.filter {$0.category == .superheroes}
+        displayHeroes = showFavoritesOnly ? heroes.filter { $0.isFavorite } : heroes
+        
         view.backgroundColor = .white
         
         let backButton = UIBarButtonItem()

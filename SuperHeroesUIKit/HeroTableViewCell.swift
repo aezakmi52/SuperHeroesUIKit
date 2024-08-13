@@ -16,6 +16,8 @@ class HeroTableViewCell: UITableViewCell {
         }
     }
     
+    let dataService = DataService.shared
+    
     let customContentView = UIView()
     let heroImage = UIImageView()
     let name = UILabel()
@@ -92,8 +94,12 @@ class HeroTableViewCell: UITableViewCell {
     }
     
     @objc func toggleFavorite() {
-        DataService.shared.changeFavorite(id: hero.id, isFavorite: !hero.isFavorite)
+        guard let hero = hero else { return }
+        dataService.changeFavorite(id: hero.id, isFavorite: !hero.isFavorite)
         updateUI()
+        if let tableView = superview as? UITableView, let indexPath = tableView.indexPath(for: self) {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
     }
     
     func configure(with hero: HeroModel) {
@@ -105,6 +111,7 @@ class HeroTableViewCell: UITableViewCell {
         }
         
         statsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        valueStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         let stats = [
             "INT": hero.stats.intelligence,
