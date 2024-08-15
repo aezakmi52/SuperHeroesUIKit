@@ -7,12 +7,18 @@
 
 import UIKit
 
+// MARK: - ViewController
+
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - Properties
     
     let tableView = UITableView()
     var heroes: [HeroModel] = []
     var displayHero: [HeroModel] = []
     var showFavoritesOnly = false
+    
+    // MARK: - Setup Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,11 +49,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
     }
     
+    // MARK: - Actions
+    
     @objc private func toggleFavorites() {
         showFavoritesOnly.toggle()
         navigationItem.rightBarButtonItem?.title = showFavoritesOnly ? "All" : "Favorites"
         tableView.reloadData()
     }
+    
+    // MARK: - Useful
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayHero.count

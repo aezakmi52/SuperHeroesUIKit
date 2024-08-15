@@ -8,8 +8,13 @@
 
 import UIKit
 
-struct HeroModel: Codable, Hashable, Identifiable {
-    var id: Int
+// MARK: - HeroModel
+
+ struct HeroModel: Codable, Hashable, Identifiable {
+    
+     // MARK: - Properties
+     
+     var id: Int
     
     var name:String
     var category: HeroCategory
@@ -18,11 +23,15 @@ struct HeroModel: Codable, Hashable, Identifiable {
     var imageURL: String
     var color: RGBAColor
     
+    // MARK: - HeroCategory
+     
     enum HeroCategory: String, Codable, CaseIterable {
         case superheroes = "superheroes"
         case supervillains = "supervillains"
     }
     
+    // MARK: - HeroStats
+     
     struct HeroStats: Codable, Hashable {
         var intelligence: Int
         var power: Int
@@ -32,6 +41,8 @@ struct HeroModel: Codable, Hashable, Identifiable {
         var protection: Int
     }
     
+    // MARK: - RGBAColor
+     
     struct RGBAColor: Codable, Hashable {
         
         var red: Double

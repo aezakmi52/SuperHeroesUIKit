@@ -7,9 +7,15 @@
 
 import UIKit
 
+// MARK: - DetailViewController
+
 class DetailViewController: UIViewController {
     
+    // MARK: - Properties
+    
     var hero: HeroModel!
+    
+    let dataService = DataService.shared
     
     let heroImage = UIImageView()
     let name = UILabel()
@@ -17,9 +23,16 @@ class DetailViewController: UIViewController {
     let valueStack = UIStackView()
     let favoriteButton = UIButton()
     
+    // MARK: - Lifecycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupView()
+    }
+    
+    // MARK: - Setup Methods
+    
+    func setupView() {
         navigationController?.navigationBar.tintColor = .white
     
         let gradient = CAGradientLayer()
@@ -28,23 +41,17 @@ class DetailViewController: UIViewController {
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint = CGPoint(x: 0.5, y: 1)
         
-        
         view.layer.insertSublayer(gradient, at: 0)
         
         name.text = hero.name.capitalized
         name.textColor = .white
         name.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         
-        let statsDict = [
-            "INTELLIGENCE": hero.stats.intelligence,
-            "POWER": hero.stats.power,
-            "SPEED": hero.stats.speed,
-            "ENDURANCE": hero.stats.endurance,
-            "REACTION": hero.stats.reaction,
-            "PROTECTION": hero.stats.protection
-        ]
+        let statsArray = ["INTELLIGENCE", "POWER", "SPEED", "ENDURANCE", "REACTION", "PROTECTION"]
         
-        for value in statsDict.values {
+        let valueArray = [hero.stats.intelligence, hero.stats.power, hero.stats.speed, hero.stats.endurance, hero.stats.reaction, hero.stats.protection]
+        
+        for value in valueArray {
             let label = UILabel()
             label.text = "\(value)"
             label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -52,7 +59,7 @@ class DetailViewController: UIViewController {
             valueStack.addArrangedSubview(label)
         }
         
-        for stat in statsDict.keys {
+        for stat in statsArray {
             let label = UILabel()
             label.text = "\(stat)"
             label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -74,9 +81,11 @@ class DetailViewController: UIViewController {
         favoriteButton.layer.borderColor = CGColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1)
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         
-        let url = URL(string: hero.imageURL)
-        if let data = try? Data(contentsOf: url!) {
-            heroImage.image = UIImage(data: data)
+        if let url = URL(string: hero.imageURL) {
+            dataService.loadImageAsync(from: url) { [weak self] image in
+                guard let self = self else { return }
+                self.heroImage.image = image
+            }
         }
         
         heroImage.translatesAutoresizingMaskIntoConstraints = false
@@ -112,9 +121,26 @@ class DetailViewController: UIViewController {
             favoriteButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-
-    @objc func toggleFavorite() {
-        hero.isFavorite.toggle()
+    
+    func updateUI() {
         favoriteButton.setTitle(hero.isFavorite ? "In favorites" : "Add to favorites", for: .normal)
+        favoriteButton.setTitleColor(hero.isFavorite ? .black : UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1), for: .normal)
+        favoriteButton.backgroundColor = (hero.isFavorite ? UIColor(red: 255/255, green: 159/255, blue: 10/255, alpha: 1) : .black)
+    }
+    
+    // MARK: - Actions
+    
+    @objc func toggleFavorite() {
+        guard let hero = hero else { return }
+        dataService.changeFavorite(id: hero.id, isFavorite: !hero.isFavorite)
+        reload()
+    }
+    
+    // MARK: - Helpers
+    
+    func reload() {
+        let updateHero = dataService.getHeroById(by: hero.id)
+        self.hero = updateHero
+        updateUI()
     }
 }

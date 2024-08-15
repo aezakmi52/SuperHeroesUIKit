@@ -7,8 +7,11 @@
 
 import UIKit
 
+// MARK: - HeroTableViewCell
 
 class HeroTableViewCell: UITableViewCell {
+    
+    // MARK: - Properties
     
     var hero: HeroModel! {
         didSet {
@@ -25,6 +28,8 @@ class HeroTableViewCell: UITableViewCell {
     let valueStackView = UIStackView()
     let favoriteButton = UIButton()
     
+    // MARK: - Initializers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
@@ -33,6 +38,8 @@ class HeroTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup Methods
     
     private func setupView() {
         heroImage.translatesAutoresizingMaskIntoConstraints = false
@@ -89,40 +96,28 @@ class HeroTableViewCell: UITableViewCell {
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
     }
     
-    func updateUI() {
-        favoriteButton.setImage(hero.isFavorite ? UIImage(named: "star.fill") : UIImage(named: "star"), for: .normal)
-    }
-    
-    @objc func toggleFavorite() {
-        guard let hero = hero else { return }
-        dataService.changeFavorite(id: hero.id, isFavorite: !hero.isFavorite)
-        updateUI()
-        if let tableView = superview as? UITableView, let indexPath = tableView.indexPath(for: self) {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-    }
-    
     func configure(with hero: HeroModel) {
+        
+        self.hero = hero
+        updateUI()
+        
         name.text = hero.name.capitalized
         
-        let url = URL(string: hero.imageURL)
-        if let data = try? Data(contentsOf: url!) {
-            heroImage.image = UIImage(data: data)
+        if let url = URL(string: hero.imageURL) {
+            dataService.loadImageAsync(from: url) { [weak self] image in
+                guard let self = self else { return }
+                self.heroImage.image = image
+            }
         }
         
         statsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         valueStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        let stats = [
-            "INT": hero.stats.intelligence,
-            "POW": hero.stats.power,
-            "SPD": hero.stats.speed,
-            "END": hero.stats.endurance,
-            "REA": hero.stats.reaction,
-            "PRO": hero.stats.protection
-        ]
+        let statsArray = ["INT", "POW", "SPD", "END", "REA", "PRO"]
         
-        for (value) in stats.values {
+        let valueArray = [hero.stats.intelligence, hero.stats.power, hero.stats.speed, hero.stats.endurance, hero.stats.reaction, hero.stats.protection]
+        
+        for value in valueArray {
             let label = UILabel()
             label.text = "\(value)"
             label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
@@ -130,7 +125,7 @@ class HeroTableViewCell: UITableViewCell {
             valueStackView.addArrangedSubview(label)
         }
         
-        for (stat) in stats.keys{
+        for stat in statsArray {
             let label = UILabel()
             label.text = "\(stat)"
             label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.38)
@@ -141,5 +136,25 @@ class HeroTableViewCell: UITableViewCell {
         customContentView.backgroundColor = hero.color.outputColor
         customContentView.layer.cornerRadius = 24
         customContentView.layer.masksToBounds = true
+    }
+    
+    // MARK: - Helpers
+    
+    func updateUI() {
+        favoriteButton.setImage(hero.isFavorite ? UIImage(named: "star.fill") : UIImage(named: "star"), for: .normal)
+    }
+    
+    func reload() {
+        let updateHero = dataService.getHeroById(by: hero.id)
+        self.hero = updateHero
+        updateUI()
+    }
+    
+    // MARK: - Actions
+    
+    @objc func toggleFavorite() {
+        guard let hero = hero else { return }
+        dataService.changeFavorite(id: hero.id, isFavorite: !hero.isFavorite)
+        reload()
     }
 }

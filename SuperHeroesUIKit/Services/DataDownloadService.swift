@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - DataDownloadService
+
 class DataDownloadService {
     
     // MARK: - Useful

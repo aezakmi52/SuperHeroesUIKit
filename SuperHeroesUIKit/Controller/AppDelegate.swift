@@ -8,10 +8,17 @@
 import UIKit
 
 @main
+
+// MARK: - AppDelegate
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    // MARK: - Properties
+    
     var window: UIWindow?
 
+    // MARK: - Useful
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -19,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let heroes: [HeroModel] = DataDownloadService().load(file: "Hero.json")
         DataService.shared.heroes = heroes
         
-        let heroesVC = HeroesViewController()
-        let villainsVC = VillainsViewController()
+        let heroesVC = HeroesViewController(category: .superheroes)
+        let villainsVC = VillainsViewController(category: .supervillains)
         
         heroesVC.tabBarItem = UITabBarItem(title: "Superheroes", image: UIImage(named: "superheroes"), tag: 0)
         villainsVC.tabBarItem = UITabBarItem(title: "Supervillains", image: UIImage(named: "supervillains"), tag: 1)

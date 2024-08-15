@@ -7,9 +7,15 @@
 
 import UIKit
 
+// MARK: - SceneDelegate
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    // MARK: - Properties
+    
     var window: UIWindow?
+    
+    // MARK: - Useful
     
     func scene(_ scene: UIScene,
                willConnectTo session: UISceneSession,
@@ -23,8 +29,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = window
     
-        let heroesVC = HeroesViewController()
-        let villainsVC = VillainsViewController()
+        let heroesVC = HeroesViewController(category: .superheroes)
+        let villainsVC = VillainsViewController(category: .supervillains)
         
         heroesVC.tabBarItem = UITabBarItem(title: "Superheroes", image: UIImage(named: "superheroes"), tag: 0)
         villainsVC.tabBarItem = UITabBarItem(title: "Supervillains", image: UIImage(named: "supervillains"), tag: 1)
